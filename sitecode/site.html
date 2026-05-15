@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Coding Solutions — End Sem Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #18181f;
+    --surface2: #21212a;
+    --border: #2e2e3a;
+    --accent: #7c6aff;
+    --accent2: #ff6a9b;
+    --accent3: #3dd9c2;
+    --accent4: #ffa94d;
+    --text: #e8e8f0;
+    --muted: #7a7a90;
+    --code-bg: #12121a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; }
+
+  .page-header {
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #12121a 0%, #1a1025 100%);
+  }
+  .page-header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+  .page-header h1 span { color: var(--accent); }
+  .page-header p { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; }
+
+  .toc {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .toc a {
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .toc a:hover { color: var(--text); border-color: var(--accent); }
+  .toc a.cat-list { border-color: #3dd9c2; color: #3dd9c2; }
+  .toc a.cat-set { border-color: #ff6a9b; color: #ff6a9b; }
+  .toc a.cat-dict { border-color: #ffa94d; color: #ffa94d; }
+  .toc a.cat-class { border-color: #7c6aff; color: #7c6aff; }
+  .toc a.cat-fn { border-color: #69d08a; color: #69d08a; }
+  .toc a.cat-str { border-color: #60c8ff; color: #60c8ff; }
+  .toc a.cat-misc { border-color: #c8c8e0; color: #c8c8e0; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem; }
+
+  .category {
+    margin-bottom: 3rem;
+  }
+
+  .cat-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .cat-header h2 { font-size: 1.2rem; font-weight: 700; }
+  .cat-header .cat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-left: auto;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .list-color .cat-dot { background: #3dd9c2; }
+  .list-color h2 { color: #3dd9c2; }
+  .list-color .cat-label { background: #3dd9c220; color: #3dd9c2; }
+
+  .set-color .cat-dot { background: #ff6a9b; }
+  .set-color h2 { color: #ff6a9b; }
+  .set-color .cat-label { background: #ff6a9b20; color: #ff6a9b; }
+
+  .dict-color .cat-dot { background: #ffa94d; }
+  .dict-color h2 { color: #ffa94d; }
+  .dict-color .cat-label { background: #ffa94d20; color: #ffa94d; }
+
+  .class-color .cat-dot { background: #7c6aff; }
+  .class-color h2 { color: #7c6aff; }
+  .class-color .cat-label { background: #7c6aff20; color: #7c6aff; }
+
+  .fn-color .cat-dot { background: #69d08a; }
+  .fn-color h2 { color: #69d08a; }
+  .fn-color .cat-label { background: #69d08a20; color: #69d08a; }
+
+  .str-color .cat-dot { background: #60c8ff; }
+  .str-color h2 { color: #60c8ff; }
+  .str-color .cat-label { background: #60c8ff20; color: #60c8ff; }
+
+  .misc-color .cat-dot { background: #c8c8e0; }
+  .misc-color h2 { color: #c8c8e0; }
+  .misc-color .cat-label { background: #c8c8e020; color: #c8c8e0; }
+
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .q-meta {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0.75rem 1.1rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .q-id {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .q-title { font-size: 0.88rem; color: var(--text); font-weight: 600; flex: 1; }
+  .hot-tag {
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 100px;
+    background: #ff6a9b20; color: #ff6a9b;
+  }
+
+  .q-body { padding: 1.1rem; }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    tab-size: 4;
+  }
+  .comment { color: #5a5a72; }
+  .kw { color: #7c6aff; }
+  .fn-name { color: #3dd9c2; }
+  .str-lit { color: #ffa94d; }
+  .num { color: #ff6a9b; }
+  .builtin { color: #69d08a; }
+  .output-block {
+    margin-top: 0.75rem;
+    background: #0a1a15;
+    border: 1px solid #1a3a2a;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #3dd9c2;
+    line-height: 1.8;
+  }
+  .output-block::before {
+    content: '▶ Output';
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #3dd9c2;
+    opacity: 0.6;
+    margin-bottom: 6px;
+    font-family: 'Syne', sans-serif;
+  }
+  .note {
+    margin-top: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    background: #1a1a10;
+    border-left: 3px solid #ffa94d;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.8rem;
+    color: #ffa94d;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 1rem; }
+    .page-header { padding: 2rem 1rem 1.5rem; }
+    .toc { padding: 1rem; }
+    pre { font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Python Coding Solutions <span>— End Sem Prep</span></h1>
+  <p>All questions solved · Segregated by topic · Lists · Sets · Dictionaries · Classes · Functions · Strings · Misc</p>
+</div>
+
+<div class="toc">
+  <span style="font-size:0.78rem;color:var(--muted);font-weight:600;align-self:center;">Jump to:</span>
+  <a href="#lists" class="cat-list">📋 Lists</a>
+  <a href="#sets" class="cat-set">⬡ Sets</a>
+  <a href="#dicts" class="cat-dict">📦 Dictionaries</a>
+  <a href="#classes" class="cat-class">🔷 Classes &amp; OOP</a>
+  <a href="#functions" class="cat-fn">⚙ Functions &amp; Recursion</a>
+  <a href="#strings" class="cat-str">🔤 Strings</a>
+  <a href="#misc" class="cat-misc">🔢 Misc / Operators</a>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════ LISTS ═══════════════════════════════════ -->
+<section class="category" id="lists">
+  <div class="cat-header list-color">
+    <div class="cat-dot"></div>
+    <h2>Lists</h2>
+    <span class="cat-label">4 Questions</span>
+  </div>
+
+  <!-- L1 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 3 · Q2a</span>
+      <span class="q-title">List of 5 friends — display names with their lengths</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># List of 5 friends with their name lengths</span>
+friends = [<span class="str-lit">"Alice"</span>, <span class="str-lit">"Bob"</span>, <span class="str-lit">"Charlie"</span>, <span class="str-lit">"Diana"</span>, <span class="str-lit">"Ethan"</span>]
+
+<span class="kw">for</span> name <span class="kw">in</span> friends:
+    <span class="builtin">print</span>(<span class="str-lit">f"Name: {name}  |  Length: {</span><span class="builtin">len</span>(name)<span class="str-lit">}"</span>)</pre>
+      <div class="output-block">Name: Alice  |  Length: 5
+Name: Bob  |  Length: 3
+Name: Charlie  |  Length: 7
+Name: Diana  |  Length: 5
+Name: Ethan  |  Length: 5</div>
+    </div>
+  </div>
+
+  <!-- L2 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 11 · Q2b</span>
+      <span class="q-title">Take list of 5 integers as input — display sum of all numbers</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Input 5 integers from user and find their sum</span>
+numbers = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">5</span>):
+    n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">f"Enter number {i+1}: "</span>))
+    numbers.append(n)
+
+total = <span class="builtin">sum</span>(numbers)
+<span class="builtin">print</span>(<span class="str-lit">f"List: {numbers}"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"Sum of all numbers: {total}"</span>)</pre>
+      <div class="output-block">Enter number 1: 10
+Enter number 2: 20
+Enter number 3: 30
+Enter number 4: 40
+Enter number 5: 50
+List: [10, 20, 30, 40, 50]
+Sum of all numbers: 150</div>
+    </div>
+  </div>
+
+  <!-- L3 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 4 · Q3a</span>
+      <span class="q-title">Function with list of 5 friends — search, add if not present, return updated list</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">manage_friends</span>(friends, search_name):
+    <span class="kw">if</span> search_name <span class="kw">in</span> friends:
+        <span class="builtin">print</span>(<span class="str-lit">f"'{search_name}' is already in the list."</span>)
+    <span class="kw">else</span>:
+        friends.append(search_name)
+        <span class="builtin">print</span>(<span class="str-lit">f"'{search_name}' not found. Added to list."</span>)
+    <span class="kw">return</span> friends
+
+friends = [<span class="str-lit">"Alice"</span>, <span class="str-lit">"Bob"</span>, <span class="str-lit">"Charlie"</span>, <span class="str-lit">"Diana"</span>, <span class="str-lit">"Ethan"</span>]
+name = <span class="builtin">input</span>(<span class="str-lit">"Enter name to search: "</span>)
+updated = <span class="fn-name">manage_friends</span>(friends, name)
+<span class="builtin">print</span>(<span class="str-lit">f"Updated list: {updated}"</span>)</pre>
+      <div class="output-block">Enter name to search: Zara
+'Zara' not found. Added to list.
+Updated list: ['Alice', 'Bob', 'Charlie', 'Diana', 'Ethan', 'Zara']</div>
+    </div>
+  </div>
+
+  <!-- L4 — tuple + list combined -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 5 · Q2b</span>
+      <span class="q-title">Birthday party — 5 family members (tuple) + 5 friends (list), modify one friend's name</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Tuple (immutable) for family, List (mutable) for friends</span>
+family = (<span class="str-lit">"Mum"</span>, <span class="str-lit">"Dad"</span>, <span class="str-lit">"Sis"</span>, <span class="str-lit">"Bro"</span>, <span class="str-lit">"Uncle"</span>)
+friends = [<span class="str-lit">"Alice"</span>, <span class="str-lit">"Bob"</span>, <span class="str-lit">"Charlie"</span>, <span class="str-lit">"Diana"</span>, <span class="str-lit">"Ethan"</span>]
+
+<span class="builtin">print</span>(<span class="str-lit">"--- Birthday Party Invitees ---"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"Family (tuple): {family}"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"Friends (list): {friends}"</span>)
+
+<span class="comment"># Modify one friend's name (lists are mutable)</span>
+friends[<span class="num">2</span>] = <span class="str-lit">"Chris"</span>
+<span class="builtin">print</span>(<span class="str-lit">"\nAfter modifying friend at index 2:"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"Friends (updated): {friends}"</span>)
+
+<span class="comment"># Display all invitees</span>
+<span class="builtin">print</span>(<span class="str-lit">"\nAll Invitees:"</span>)
+<span class="kw">for</span> member <span class="kw">in</span> family:
+    <span class="builtin">print</span>(<span class="str-lit">f"  Family: {member}"</span>)
+<span class="kw">for</span> friend <span class="kw">in</span> friends:
+    <span class="builtin">print</span>(<span class="str-lit">f"  Friend: {friend}"</span>)</pre>
+      <div class="output-block">--- Birthday Party Invitees ---
+Family (tuple): ('Mum', 'Dad', 'Sis', 'Bro', 'Uncle')
+Friends (list): ['Alice', 'Bob', 'Charlie', 'Diana', 'Ethan']
+
+After modifying friend at index 2:
+Friends (updated): ['Alice', 'Bob', 'Chris', 'Diana', 'Ethan']
+
+All Invitees:
+  Family: Mum
+  Family: Dad
+  ...  (and so on)</div>
+      <div class="note">💡 Key concept: Tuples are immutable (cannot be modified). Lists are mutable. That's why family is a tuple and friends is a list here.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════ SETS ═══════════════════════════════════ -->
+<section class="category" id="sets">
+  <div class="cat-header set-color">
+    <div class="cat-dot"></div>
+    <h2>Sets</h2>
+    <span class="cat-label">1 Question</span>
+  </div>
+
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 1 · Q2a</span>
+      <span class="q-title">Sets G1, G2, G3 — students who play outdoor only &amp; all games</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># G1 = outdoor, G2 = indoor, G3 = both (or all games)</span>
+G1 = {<span class="str-lit">"Alice"</span>, <span class="str-lit">"Bob"</span>, <span class="str-lit">"Charlie"</span>, <span class="str-lit">"Diana"</span>}   <span class="comment"># outdoor only group</span>
+G2 = {<span class="str-lit">"Bob"</span>, <span class="str-lit">"Charlie"</span>, <span class="str-lit">"Ethan"</span>, <span class="str-lit">"Fiona"</span>}    <span class="comment"># indoor group</span>
+G3 = {<span class="str-lit">"Charlie"</span>, <span class="str-lit">"Gita"</span>, <span class="str-lit">"Harry"</span>, <span class="str-lit">"Alice"</span>}   <span class="comment"># all games group</span>
+
+<span class="comment"># Students who play OUTDOOR ONLY (in G1 but not G2 or G3)</span>
+outdoor_only = G1 - G2 - G3
+<span class="builtin">print</span>(<span class="str-lit">"Students who play outdoor games only:"</span>, outdoor_only)
+
+<span class="comment"># Students who play ALL games (in G1, G2, AND G3)</span>
+all_games = G1 &amp; G2 &amp; G3
+<span class="builtin">print</span>(<span class="str-lit">"Students who play all games:"</span>, all_games)
+
+<span class="comment"># Bonus: all students across all groups (union)</span>
+all_students = G1 | G2 | G3
+<span class="builtin">print</span>(<span class="str-lit">"All students (union):"</span>, all_students)</pre>
+      <div class="output-block">Students who play outdoor games only: {'Diana'}
+Students who play all games: {'Charlie'}
+All students (union): {'Alice', 'Bob', 'Charlie', 'Diana', 'Ethan', 'Fiona', 'Gita', 'Harry'}</div>
+      <div class="note">💡 Set operators: <strong>-</strong> (difference), <strong>&amp;</strong> (intersection), <strong>|</strong> (union), <strong>^</strong> (symmetric difference). Sets automatically remove duplicates.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════ DICTIONARIES ═══════════════════════════════════ -->
+<section class="category" id="dicts">
+  <div class="cat-header dict-color">
+    <div class="cat-dot"></div>
+    <h2>Dictionaries</h2>
+    <span class="cat-label">3 Questions</span>
+  </div>
+
+  <!-- D1 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 1 · Q2b</span>
+      <span class="q-title">Employee records — store id, name, age, salary, address; add employee; retrieve by id</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Dictionary of employee records</span>
+employees = {
+    <span class="num">101</span>: {<span class="str-lit">"name"</span>: <span class="str-lit">"Alice"</span>, <span class="str-lit">"age"</span>: <span class="num">30</span>, <span class="str-lit">"salary"</span>: <span class="num">50000</span>, <span class="str-lit">"address"</span>: <span class="str-lit">"Pune"</span>},
+    <span class="num">102</span>: {<span class="str-lit">"name"</span>: <span class="str-lit">"Bob"</span>,   <span class="str-lit">"age"</span>: <span class="num">25</span>, <span class="str-lit">"salary"</span>: <span class="num">45000</span>, <span class="str-lit">"address"</span>: <span class="str-lit">"Mumbai"</span>},
+    <span class="num">103</span>: {<span class="str-lit">"name"</span>: <span class="str-lit">"Carol"</span>, <span class="str-lit">"age"</span>: <span class="num">28</span>, <span class="str-lit">"salary"</span>: <span class="num">60000</span>, <span class="str-lit">"address"</span>: <span class="str-lit">"Delhi"</span>},
+}
+
+<span class="comment"># Add a new employee</span>
+<span class="kw">def</span> <span class="fn-name">add_employee</span>(emp_dict, emp_id, name, age, salary, address):
+    emp_dict[emp_id] = {<span class="str-lit">"name"</span>: name, <span class="str-lit">"age"</span>: age,
+                        <span class="str-lit">"salary"</span>: salary, <span class="str-lit">"address"</span>: address}
+    <span class="builtin">print</span>(<span class="str-lit">f"Employee {name} added successfully."</span>)
+
+<span class="comment"># Retrieve employee by id</span>
+<span class="kw">def</span> <span class="fn-name">get_employee</span>(emp_dict, emp_id):
+    <span class="kw">if</span> emp_id <span class="kw">in</span> emp_dict:
+        emp = emp_dict[emp_id]
+        <span class="builtin">print</span>(<span class="str-lit">f"\n--- Employee ID: {emp_id} ---"</span>)
+        <span class="kw">for</span> key, val <span class="kw">in</span> emp.items():
+            <span class="builtin">print</span>(<span class="str-lit">f"  {key.capitalize()}: {val}"</span>)
+    <span class="kw">else</span>:
+        <span class="builtin">print</span>(<span class="str-lit">"Employee not found."</span>)
+
+<span class="fn-name">add_employee</span>(employees, <span class="num">104</span>, <span class="str-lit">"Diana"</span>, <span class="num">32</span>, <span class="num">55000</span>, <span class="str-lit">"Bangalore"</span>)
+<span class="fn-name">get_employee</span>(employees, <span class="num">102</span>)
+<span class="fn-name">get_employee</span>(employees, <span class="num">999</span>)</pre>
+      <div class="output-block">Employee Diana added successfully.
+
+--- Employee ID: 102 ---
+  Name: Bob
+  Age: 25
+  Salary: 45000
+  Address: Mumbai
+Employee not found.</div>
+    </div>
+  </div>
+
+  <!-- D2 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 2 · Q2a</span>
+      <span class="q-title">Dictionary — 5 courses as keys, enrolled students as values; display keys and values separately</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Dictionary: course → number of students enrolled</span>
+courses = {
+    <span class="str-lit">"Python"</span>:      <span class="num">45</span>,
+    <span class="str-lit">"Data Science"</span>: <span class="num">30</span>,
+    <span class="str-lit">"Web Dev"</span>:      <span class="num">60</span>,
+    <span class="str-lit">"AI/ML"</span>:        <span class="num">25</span>,
+    <span class="str-lit">"Cybersecurity"</span>: <span class="num">20</span>
+}
+
+<span class="builtin">print</span>(<span class="str-lit">"All Course Names (Keys):"</span>)
+<span class="kw">for</span> key <span class="kw">in</span> courses.keys():
+    <span class="builtin">print</span>(<span class="str-lit">f"  {key}"</span>)
+
+<span class="builtin">print</span>(<span class="str-lit">"\nStudents Enrolled (Values):"</span>)
+<span class="kw">for</span> val <span class="kw">in</span> courses.values():
+    <span class="builtin">print</span>(<span class="str-lit">f"  {val}"</span>)
+
+<span class="builtin">print</span>(<span class="str-lit">"\nFull Details (Items):"</span>)
+<span class="kw">for</span> course, count <span class="kw">in</span> courses.items():
+    <span class="builtin">print</span>(<span class="str-lit">f"  {course}: {count} students"</span>)</pre>
+      <div class="output-block">All Course Names (Keys):
+  Python
+  Data Science
+  Web Dev
+  AI/ML
+  Cybersecurity
+
+Students Enrolled (Values):
+  45
+  30
+  60
+  25
+  20
+
+Full Details (Items):
+  Python: 45 students
+  ...</div>
+    </div>
+  </div>
+
+  <!-- D3 — Birthday game (uses dict logic) -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 3 · Q2b</span>
+      <span class="q-title">Birthday game — enter DOB, compute single digit sum, display personality message</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Single digit sum: keep adding digits until one digit remains</span>
+<span class="kw">def</span> <span class="fn-name">single_digit_sum</span>(n):
+    <span class="kw">while</span> n >= <span class="num">10</span>:
+        n = <span class="builtin">sum</span>(<span class="builtin">int</span>(d) <span class="kw">for</span> d <span class="kw">in</span> <span class="builtin">str</span>(n))
+    <span class="kw">return</span> n
+
+dob = <span class="builtin">input</span>(<span class="str-lit">"Enter your date of birth (DDMMYYYY): "</span>)
+
+<span class="comment"># Remove non-digits and sum all digits</span>
+digits_only = <span class="str-lit">""</span>.join(c <span class="kw">for</span> c <span class="kw">in</span> dob <span class="kw">if</span> c.isdigit())
+total = <span class="builtin">sum</span>(<span class="builtin">int</span>(d) <span class="kw">for</span> d <span class="kw">in</span> digits_only)
+result = <span class="fn-name">single_digit_sum</span>(total)
+
+<span class="comment"># Personality dictionary — maps digit to message</span>
+messages = {
+    <span class="num">1</span>: <span class="str-lit">"Intelligent"</span>, <span class="num">2</span>: <span class="str-lit">"Intelligent"</span>, <span class="num">3</span>: <span class="str-lit">"Intelligent"</span>,
+    <span class="num">4</span>: <span class="str-lit">"Cool"</span>,        <span class="num">5</span>: <span class="str-lit">"Cool"</span>,        <span class="num">6</span>: <span class="str-lit">"Cool"</span>,
+    <span class="num">7</span>: <span class="str-lit">"Gorgeous"</span>,    <span class="num">8</span>: <span class="str-lit">"Gorgeous"</span>,    <span class="num">9</span>: <span class="str-lit">"Gorgeous"</span>
+}
+
+<span class="builtin">print</span>(<span class="str-lit">f"Single digit sum: {result}"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"You are: {messages[result]}!"</span>)</pre>
+      <div class="output-block">Enter your date of birth (DDMMYYYY): 15082004
+Single digit sum: 2
+You are: Intelligent!</div>
+      <div class="note">💡 single_digit_sum() reduces any number to a single digit by repeatedly summing its digits. e.g. 1+5+0+8+2+0+0+4 = 20 → 2+0 = 2</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════ CLASSES ═══════════════════════════════════ -->
+<section class="category" id="classes">
+  <div class="cat-header class-color">
+    <div class="cat-dot"></div>
+    <h2>Classes &amp; OOP (Inheritance)</h2>
+    <span class="cat-label">8 Questions</span>
+  </div>
+
+  <!-- C1 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 1 · Q4a</span>
+      <span class="q-title">DOG class — color, breed, name; use destructor</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">class</span> <span class="fn-name">Dog</span>:
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, name, breed, color):
+        self.name  = name
+        self.breed = breed
+        self.color = color
+        <span class="builtin">print</span>(<span class="str-lit">f"Dog '{self.name}' object created!"</span>)
+
+    <span class="kw">def</span> <span class="fn-name">display</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Name: {self.name}, Breed: {self.breed}, Color: {self.color}"</span>)
+
+    <span class="kw">def</span> <span class="fn-name">__del__</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Dog '{self.name}' object destroyed!"</span>)
+
+d1 = <span class="fn-name">Dog</span>(<span class="str-lit">"Bruno"</span>, <span class="str-lit">"Labrador"</span>, <span class="str-lit">"Golden"</span>)
+d1.display()
+<span class="kw">del</span> d1   <span class="comment"># triggers __del__</span></pre>
+      <div class="output-block">Dog 'Bruno' object created!
+Name: Bruno, Breed: Labrador, Color: Golden
+Dog 'Bruno' object destroyed!</div>
+    </div>
+  </div>
+
+  <!-- C2 -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 4 · Q4a</span>
+      <span class="q-title">Flower class — name, color, behavior show()</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">class</span> <span class="fn-name">Flower</span>:
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, name, color):
+        self.name  = name
+        self.color = color
+
+    <span class="kw">def</span> <span class="fn-name">show</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Flower: {self.name}, Color: {self.color}"</span>)
+
+f = <span class="fn-name">Flower</span>(<span class="str-lit">"Lotus"</span>, <span class="str-lit">"Pink"</span>)
+f.show()</pre>
+      <div class="output-block">Flower: Lotus, Color: Pink</div>
+    </div>
+  </div>
+
+  <!-- C3 — BIRD inheritance -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 2 · Q4b</span>
+      <span class="q-title">Base: BIRD (color, weight, Fly); Child: Peacock and Eagle with flying height</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">class</span> <span class="fn-name">Bird</span>:
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, color, weight):
+        self.color  = color
+        self.weight = weight
+
+    <span class="kw">def</span> <span class="fn-name">Fly</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"{self.__class__.__name__} can fly."</span>)
+
+<span class="kw">class</span> <span class="fn-name">Peacock</span>(Bird):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, color, weight, flying_height):
+        <span class="builtin">super</span>().__init__(color, weight)
+        self.flying_height = flying_height
+
+    <span class="kw">def</span> <span class="fn-name">show_height</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Peacock | Color: {self.color} | Weight: {self.weight}kg | Flying Height: {self.flying_height}m"</span>)
+
+<span class="kw">class</span> <span class="fn-name">Eagle</span>(Bird):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, color, weight, flying_height):
+        <span class="builtin">super</span>().__init__(color, weight)
+        self.flying_height = flying_height
+
+    <span class="kw">def</span> <span class="fn-name">show_height</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Eagle   | Color: {self.color} | Weight: {self.weight}kg | Flying Height: {self.flying_height}m"</span>)
+
+p = <span class="fn-name">Peacock</span>(<span class="str-lit">"Blue-Green"</span>, <span class="num">5</span>, <span class="num">10</span>)
+e = <span class="fn-name">Eagle</span>(<span class="str-lit">"Brown"</span>, <span class="num">6</span>, <span class="num">300</span>)
+
+p.Fly();        p.show_height()
+e.Fly();        e.show_height()</pre>
+      <div class="output-block">Peacock can fly.
+Peacock | Color: Blue-Green | Weight: 5kg | Flying Height: 10m
+Eagle can fly.
+Eagle   | Color: Brown | Weight: 6kg | Flying Height: 300m</div>
+    </div>
+  </div>
+
+  <!-- C4 — STUDENT + BTech -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 3 · Q4b</span>
+      <span class="q-title">Base: STUDENT (name, age, display); Child: BTechStudent (semester)</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">class</span> <span class="fn-name">Student</span>:
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, name, age):
+        self.name = name
+        self.age  = age
+
+    <span class="kw">def</span> <span class="fn-name">display</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Name: {self.name} | Age: {self.age}"</span>)
+
+<span class="kw">class</span> <span class="fn-name">BTechStudent</span>(Student):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, name, age, semester):
+        <span class="builtin">super</span>().__init__(name, age)
+        self.semester = semester
+
+    <span class="kw">def</span> <span class="fn-name">display</span>(self):   <span class="comment"># method overriding</span>
+        <span class="builtin">super</span>().display()
+        <span class="builtin">print</span>(<span class="str-lit">f"Semester: {self.semester}"</span>)
+
+s = <span class="fn-name">BTechStudent</span>(<span class="str-lit">"Aisha"</span>, <span class="num">20</span>, <span class="num">4</span>)
+s.display()</pre>
+      <div class="output-block">Name: Aisha | Age: 20
+Semester: 4</div>
+    </div>
+  </div>
+
+  <!-- C5 — Flower with Rose child -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 6 · Q4b</span>
+      <span class="q-title">Base: Flower (name, color, show); Child: Rose (petalcount)</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">class</span> <span class="fn-name">Flower</span>:
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, name, color):
+        self.name  = name
+        self.color = color
+
+    <span class="kw">def</span> <span class="fn-name">show</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Flower: {self.name} | Color: {self.color}"</span>)
+
+<span class="kw">class</span> <span class="fn-name">Rose</span>(Flower):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, name, color, petalcount):
+        <span class="builtin">super</span>().__init__(name, color)
+        self.petalcount = petalcount
+
+    <span class="kw">def</span> <span class="fn-name">show</span>(self):
+        <span class="builtin">super</span>().show()
+        <span class="builtin">print</span>(<span class="str-lit">f"Petal Count: {self.petalcount}"</span>)
+
+r = <span class="fn-name">Rose</span>(<span class="str-lit">"Rose"</span>, <span class="str-lit">"Red"</span>, <span class="num">32</span>)
+r.show()</pre>
+      <div class="output-block">Flower: Rose | Color: Red
+Petal Count: 32</div>
+    </div>
+  </div>
+
+  <!-- C6 — Geometric Shapes -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 7 · Q4b &amp; Paper 8 · Q4b</span>
+      <span class="q-title">Base: Shape; Subclasses: Rectangle (area = l×w) and Circle (area = πr²)</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">import</span> math
+
+<span class="kw">class</span> <span class="fn-name">Shape</span>:
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, length=<span class="num">0</span>, width=<span class="num">0</span>, radius=<span class="num">0</span>):
+        self.length = length
+        self.width  = width
+        self.radius = radius
+
+    <span class="kw">def</span> <span class="fn-name">area</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">"Area not defined for base Shape."</span>)
+
+<span class="kw">class</span> <span class="fn-name">Rectangle</span>(Shape):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, length, width):
+        <span class="builtin">super</span>().__init__(length=length, width=width)
+
+    <span class="kw">def</span> <span class="fn-name">area</span>(self):
+        result = self.length * self.width
+        <span class="builtin">print</span>(<span class="str-lit">f"Rectangle Area ({self.length} x {self.width}) = {result}"</span>)
+
+<span class="kw">class</span> <span class="fn-name">Circle</span>(Shape):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, radius):
+        <span class="builtin">super</span>().__init__(radius=radius)
+
+    <span class="kw">def</span> <span class="fn-name">area</span>(self):
+        result = <span class="builtin">round</span>(math.pi * self.radius ** <span class="num">2</span>, <span class="num">2</span>)
+        <span class="builtin">print</span>(<span class="str-lit">f"Circle Area (r={self.radius}) = {result}"</span>)
+
+r = <span class="fn-name">Rectangle</span>(<span class="num">5</span>, <span class="num">3</span>)
+c = <span class="fn-name">Circle</span>(<span class="num">7</span>)
+r.area()
+c.area()</pre>
+      <div class="output-block">Rectangle Area (5 x 3) = 15
+Circle Area (r=7) = 153.94</div>
+    </div>
+  </div>
+
+  <!-- C7 — School class variable -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 10 · Q4a &amp; Q4b</span>
+      <span class="q-title">School — class attribute SchoolCity, instance attrs, SetAge(); Child class with SchoolBranch</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">class</span> <span class="fn-name">School</span>:
+    SchoolCity = <span class="str-lit">"Pune"</span>   <span class="comment"># class attribute — shared by all objects</span>
+
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, stud_name, stud_std):
+        self.StudName = stud_name
+        self.StudStd  = stud_std
+
+    <span class="kw">def</span> <span class="fn-name">SetAge</span>(self):
+        self.age = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter student age: "</span>))
+        <span class="builtin">print</span>(<span class="str-lit">f"Name: {self.StudName} | Std: {self.StudStd} | City: {School.SchoolCity} | Age: {self.age}"</span>)
+
+<span class="kw">class</span> <span class="fn-name">Branch</span>(School):
+    <span class="kw">def</span> <span class="fn-name">__init__</span>(self, stud_name, stud_std, branch):
+        <span class="builtin">super</span>().__init__(stud_name, stud_std)
+        self.SchoolBranch = branch
+
+    <span class="kw">def</span> <span class="fn-name">show</span>(self):
+        <span class="builtin">print</span>(<span class="str-lit">f"Name: {self.StudName} | Std: {self.StudStd} | City: {School.SchoolCity} | Branch: {self.SchoolBranch}"</span>)
+
+s = <span class="fn-name">School</span>(<span class="str-lit">"Aisha"</span>, <span class="str-lit">"FY"</span>)
+s.SetAge()
+
+b = <span class="fn-name">Branch</span>(<span class="str-lit">"Rahul"</span>, <span class="str-lit">"SY"</span>, <span class="str-lit">"Engineering"</span>)
+b.show()</pre>
+      <div class="output-block">Enter student age: 18
+Name: Aisha | Std: FY | City: Pune | Age: 18
+Name: Rahul | Std: SY | City: Pune | Branch: Engineering</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════ FUNCTIONS & RECURSION ═══════════════════════════════════ -->
+<section class="category" id="functions">
+  <div class="cat-header fn-color">
+    <div class="cat-dot"></div>
+    <h2>Functions &amp; Recursion</h2>
+    <span class="cat-label">6 Questions</span>
+  </div>
+
+  <!-- F1 — Spy Number -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 1 · Q3a &amp; Paper 7 · Q3a</span>
+      <span class="q-title">Spy number — sum of digits equals product of digits</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">is_spy</span>(n):
+    digits = [<span class="builtin">int</span>(d) <span class="kw">for</span> d <span class="kw">in</span> <span class="builtin">str</span>(n)]
+    digit_sum     = <span class="builtin">sum</span>(digits)
+    digit_product = <span class="num">1</span>
+    <span class="kw">for</span> d <span class="kw">in</span> digits:
+        digit_product *= d
+    <span class="kw">return</span> digit_sum == digit_product
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter a number: "</span>))
+<span class="kw">if</span> <span class="fn-name">is_spy</span>(n):
+    <span class="builtin">print</span>(<span class="str-lit">f"{n} is a Spy Number!"</span>)
+<span class="kw">else</span>:
+    <span class="builtin">print</span>(<span class="str-lit">f"{n} is NOT a Spy Number."</span>)</pre>
+      <div class="output-block">Enter a number: 1124
+1+1+2+4 = 8   and   1×1×2×4 = 8  → Equal!
+1124 is a Spy Number!</div>
+      <div class="note">💡 A spy number has sum of digits = product of digits. e.g. 1124: sum=8, product=8 ✓</div>
+    </div>
+  </div>
+
+  <!-- F2 — Armstrong -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 2 · Q2b &amp; Paper 8 · Q3a</span>
+      <span class="q-title">Armstrong number — sum of cubes of digits equals the number</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">is_armstrong</span>(n):
+    digits = [<span class="builtin">int</span>(d) <span class="kw">for</span> d <span class="kw">in</span> <span class="builtin">str</span>(n)]
+    power  = <span class="builtin">len</span>(digits)          <span class="comment"># works for any length, not just 3-digit</span>
+    total  = <span class="builtin">sum</span>(d ** power <span class="kw">for</span> d <span class="kw">in</span> digits)
+    <span class="kw">return</span> total == n
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter a 3-digit number: "</span>))
+<span class="kw">if</span> <span class="fn-name">is_armstrong</span>(n):
+    <span class="builtin">print</span>(<span class="str-lit">f"{n} is an Armstrong number."</span>)
+<span class="kw">else</span>:
+    <span class="builtin">print</span>(<span class="str-lit">f"{n} is NOT an Armstrong number."</span>)</pre>
+      <div class="output-block">Enter a 3-digit number: 153
+1³ + 5³ + 3³ = 1 + 125 + 27 = 153 ✓
+153 is an Armstrong number.</div>
+    </div>
+  </div>
+
+  <!-- F3 — Factorial recursion -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 2 · Q3a</span>
+      <span class="q-title">Factorial using recursive function</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">factorial</span>(n):
+    <span class="kw">if</span> n == <span class="num">0</span> <span class="kw">or</span> n == <span class="num">1</span>:    <span class="comment"># base case</span>
+        <span class="kw">return</span> <span class="num">1</span>
+    <span class="kw">return</span> n * <span class="fn-name">factorial</span>(n - <span class="num">1</span>)   <span class="comment"># recursive call</span>
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter a number: "</span>))
+<span class="builtin">print</span>(<span class="str-lit">f"Factorial of {n} = {</span><span class="fn-name">factorial</span>(n)<span class="str-lit">}"</span>)</pre>
+      <div class="output-block">Enter a number: 5
+Factorial of 5 = 120</div>
+      <div class="note">💡 Trace: factorial(5) → 5×factorial(4) → 5×4×factorial(3) → ... → 5×4×3×2×1 = 120</div>
+    </div>
+  </div>
+
+  <!-- F4 — Multiplication table recursion -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 3 · Q3a</span>
+      <span class="q-title">Multiplication table using recursive function</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">table</span>(n, i=<span class="num">1</span>):
+    <span class="kw">if</span> i > <span class="num">10</span>:       <span class="comment"># base case</span>
+        <span class="kw">return</span>
+    <span class="builtin">print</span>(<span class="str-lit">f"{n} x {i} = {n * i}"</span>)
+    <span class="fn-name">table</span>(n, i + <span class="num">1</span>)   <span class="comment"># recursive call</span>
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter number for table: "</span>))
+<span class="fn-name">table</span>(n)</pre>
+      <div class="output-block">5 x 1 = 5
+5 x 2 = 10
+5 x 3 = 15
+...
+5 x 10 = 50</div>
+    </div>
+  </div>
+
+  <!-- F5 — Fibonacci recursion -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 11 · Q3a</span>
+      <span class="q-title">Fibonacci series up to nth term using recursive function</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">fibonacci</span>(n):
+    <span class="kw">if</span> n <= <span class="num">0</span>:  <span class="kw">return</span> <span class="num">0</span>    <span class="comment"># base case 1</span>
+    <span class="kw">if</span> n == <span class="num">1</span>: <span class="kw">return</span> <span class="num">1</span>    <span class="comment"># base case 2</span>
+    <span class="kw">return</span> <span class="fn-name">fibonacci</span>(n-<span class="num">1</span>) + <span class="fn-name">fibonacci</span>(n-<span class="num">2</span>)   <span class="comment"># recursive call</span>
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter number of terms: "</span>))
+<span class="builtin">print</span>(<span class="str-lit">"Fibonacci series:"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
+    <span class="builtin">print</span>(<span class="fn-name">fibonacci</span>(i), end=<span class="str-lit">" "</span>)</pre>
+      <div class="output-block">Enter number of terms: 8
+Fibonacci series:
+0 1 1 2 3 5 8 13</div>
+    </div>
+  </div>
+
+  <!-- F6 — Reverse using recursion -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 9 · Q3a</span>
+      <span class="q-title">Find reverse of a number using recursion</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">reverse</span>(n, rev=<span class="num">0</span>):
+    <span class="kw">if</span> n == <span class="num">0</span>:
+        <span class="kw">return</span> rev          <span class="comment"># base case</span>
+    digit = n % <span class="num">10</span>
+    <span class="kw">return</span> <span class="fn-name">reverse</span>(n // <span class="num">10</span>, rev * <span class="num">10</span> + digit)
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter a number: "</span>))
+<span class="builtin">print</span>(<span class="str-lit">f"Reverse of {n} = {</span><span class="fn-name">reverse</span>(n)<span class="str-lit">}"</span>)</pre>
+      <div class="output-block">Enter a number: 12345
+Reverse of 12345 = 54321</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════ STRINGS ═══════════════════════════════════ -->
+<section class="category" id="strings">
+  <div class="cat-header str-color">
+    <div class="cat-dot"></div>
+    <h2>Strings</h2>
+    <span class="cat-label">2 Questions</span>
+  </div>
+
+  <!-- S1 — Vehicle registration -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 6 · Q3a</span>
+      <span class="q-title">Vehicle registration — validate format AABBCCDDDD (2 letters, 2 digits, 2 letters, 4 digits)</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="kw">def</span> <span class="fn-name">validate_reg</span>(reg):
+    reg = reg.replace(<span class="str-lit">" "</span>, <span class="str-lit">""</span>).upper()   <span class="comment"># clean input</span>
+
+    <span class="kw">if</span> <span class="builtin">len</span>(reg) != <span class="num">10</span>:
+        <span class="kw">return</span> <span class="str-lit">"Invalid: must be exactly 10 characters"</span>
+
+    <span class="comment"># Format: AA BB CC DDDD  →  [0:2]=alpha, [2:4]=digit, [4:6]=alpha, [6:10]=digit</span>
+    <span class="kw">if</span>   reg[<span class="num">0</span>:<span class="num">2</span>].isalpha()  \
+     <span class="kw">and</span> reg[<span class="num">2</span>:<span class="num">4</span>].isdigit()  \
+     <span class="kw">and</span> reg[<span class="num">4</span>:<span class="num">6</span>].isalpha()  \
+     <span class="kw">and</span> reg[<span class="num">6</span>:<span class="num">10</span>].isdigit():
+        <span class="kw">return</span> <span class="str-lit">f"'{reg}' is a VALID registration number."</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="str-lit">f"'{reg}' is INVALID."</span>
+
+reg = <span class="builtin">input</span>(<span class="str-lit">"Enter vehicle registration number: "</span>)
+<span class="builtin">print</span>(<span class="fn-name">validate_reg</span>(reg))</pre>
+      <div class="output-block">Enter vehicle registration number: MH12AB1234
+'MH12AB1234' is a VALID registration number.
+
+Enter vehicle registration number: MH1AB1234
+'MH1AB1234' is INVALID.</div>
+    </div>
+  </div>
+
+  <!-- S2 — Remove punctuation -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 7 · Q2b</span>
+      <span class="q-title">Remove punctuation from string WITHOUT using string inbuilt methods</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Cannot use .replace(), .strip(), etc. — use manual character check</span>
+punctuations = <span class="str-lit">"!\"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~"</span>
+
+text = <span class="builtin">input</span>(<span class="str-lit">"Enter a string: "</span>)
+result = <span class="str-lit">""</span>
+
+<span class="kw">for</span> char <span class="kw">in</span> text:
+    <span class="kw">if</span> char <span class="kw">not in</span> punctuations:
+        result += char
+
+<span class="builtin">print</span>(<span class="str-lit">f"Original : {text}"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"Cleaned  : {result}"</span>)</pre>
+      <div class="output-block">Enter a string: Hello, World! How are you?
+Original : Hello, World! How are you?
+Cleaned  : Hello World How are you</div>
+      <div class="note">💡 Key point: we manually loop and check membership in the punctuations string instead of using .replace() or string module — because the question says no inbuilt methods.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════ MISC ═══════════════════════════════════ -->
+<section class="category" id="misc">
+  <div class="cat-header misc-color">
+    <div class="cat-dot"></div>
+    <h2>Miscellaneous — Operators &amp; Logic</h2>
+    <span class="cat-label">3 Questions</span>
+  </div>
+
+  <!-- M1 — Multiply/divide without arithmetic -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 4 · Q1a</span>
+      <span class="q-title">Multiply and divide by 4 WITHOUT arithmetic operators (use bit shifting)</span>
+      <span class="hot-tag">🔴 Hot</span>
+    </div>
+    <div class="q-body">
+<pre><span class="comment"># Bit shift: &lt;&lt; shifts left (multiply by 2), &gt;&gt; shifts right (divide by 2)</span>
+<span class="comment"># Multiply by 4 = shift left by 2 (4 = 2²)</span>
+<span class="comment"># Divide by 4   = shift right by 2</span>
+
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter a number: "</span>))
+
+multiplied = n &lt;&lt; <span class="num">2</span>    <span class="comment"># n * 4 using left bit shift</span>
+divided    = n &gt;&gt; <span class="num">2</span>    <span class="comment"># n // 4 using right bit shift</span>
+
+<span class="builtin">print</span>(<span class="str-lit">f"{n} multiplied by 4 = {multiplied}"</span>)
+<span class="builtin">print</span>(<span class="str-lit">f"{n} divided by 4   = {divided}"</span>)</pre>
+      <div class="output-block">Enter a number: 20
+20 multiplied by 4 = 80
+20 divided by 4   = 5</div>
+      <div class="note">💡 n &lt;&lt; k = n × 2^k   |   n &gt;&gt; k = n ÷ 2^k   (integer division). So &lt;&lt;2 = ×4, &gt;&gt;2 = ÷4. No +, -, *, / used.</div>
+    </div>
+  </div>
+
+  <!-- M2 — Multiple of 5 and 8 ternary -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 4 · Q2b</span>
+      <span class="q-title">Check multiple of 5 and 8 using ternary operator</span>
+    </div>
+    <div class="q-body">
+<pre>n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter a number: "</span>))
+
+<span class="comment"># Ternary operator syntax: value_if_true if condition else value_if_false</span>
+result = <span class="str-lit">"Multiple of both 5 and 8"</span> <span class="kw">if</span> (n % <span class="num">5</span> == <span class="num">0</span> <span class="kw">and</span> n % <span class="num">8</span> == <span class="num">0</span>) \
+         <span class="kw">else</span> <span class="str-lit">"Multiple of 5 only"</span>       <span class="kw">if</span> n % <span class="num">5</span> == <span class="num">0</span> \
+         <span class="kw">else</span> <span class="str-lit">"Multiple of 8 only"</span>       <span class="kw">if</span> n % <span class="num">8</span> == <span class="num">0</span> \
+         <span class="kw">else</span> <span class="str-lit">"Not a multiple of 5 or 8"</span>
+
+<span class="builtin">print</span>(<span class="str-lit">f"{n}: {result}"</span>)</pre>
+      <div class="output-block">Enter a number: 40
+40: Multiple of both 5 and 8</div>
+    </div>
+  </div>
+
+  <!-- M3 — 3 digits all combinations -->
+  <div class="q-card">
+    <div class="q-meta">
+      <span class="q-id">Paper 8 · Q2b</span>
+      <span class="q-title">Accept three digits — print all possible combinations</span>
+    </div>
+    <div class="q-body">
+<pre>a = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter digit 1: "</span>))
+b = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter digit 2: "</span>))
+c = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str-lit">"Enter digit 3: "</span>))
+
+digits = [a, b, c]
+<span class="builtin">print</span>(<span class="str-lit">"All possible combinations:"</span>)
+count = <span class="num">1</span>
+<span class="kw">for</span> i <span class="kw">in</span> digits:
+    <span class="kw">for</span> j <span class="kw">in</span> digits:
+        <span class="kw">for</span> k <span class="kw">in</span> digits:
+            <span class="kw">if</span> i != j <span class="kw">and</span> j != k <span class="kw">and</span> i != k:   <span class="comment"># no repeats</span>
+                <span class="builtin">print</span>(<span class="str-lit">f"{count}. {i}{j}{k}"</span>)
+                count += <span class="num">1</span></pre>
+      <div class="output-block">Enter digit 1: 1
+Enter digit 2: 2
+Enter digit 3: 3
+All possible combinations:
+1. 123
+2. 132
+3. 213
+4. 231
+5. 312
+6. 321</div>
+      <div class="note">💡 3 digits → 3! = 6 unique combinations. The condition i!=j and j!=k and i!=k prevents using the same digit twice.</div>
+    </div>
+  </div>
+
+</section>
+
+<div style="text-align:center; padding: 2rem 0 3rem; color: var(--muted); font-size: 0.82rem;">
+  All questions solved · Good luck on your exam! 🎯
+</div>
+
+</div>
+</body>
+</html>

@@ -1,4 +1,8 @@
-a  = int(input())
-print()
-for i in range(1,a+1):
-    print("*"*i)
+a = int (input ())
+
+digits = [int(d) for d in str (a) ]
+digits_sum = sum(digits)
+digit_product =1
+for i in digit_product:
+    digit_product *= a
+print (digits_sum)  
